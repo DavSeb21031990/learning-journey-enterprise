@@ -1,0 +1,35 @@
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# Personal notes (if you want to keep some private)
+private-notes/
+personal/
+
+# Node modules (for future frontend projects)
+node_modules/
+npm-debug.log*
+
+# Java build files
+target/
+*.class
+*.jar
+*.war
+
+# Environment variables
+.env
+.env.local
