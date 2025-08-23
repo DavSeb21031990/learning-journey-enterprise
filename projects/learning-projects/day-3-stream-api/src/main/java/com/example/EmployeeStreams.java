@@ -1,35 +1,10 @@
 package com.example;
 
+import com.example.entities.Employee;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-class Employee {
-    private String id;
-    private String name;
-    private String department;
-    private double salary;
-    private int experience;
-
-    public Employee(String id, String name, String department, double salary, int experience) {
-        this.id = id;
-        this.name = name;
-        this.department = department;
-        this.salary = salary;
-        this.experience = experience;
-    }
-
-    // Getters
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getDepartment() { return department; }
-    public double getSalary() { return salary; }
-    public int getExperience() { return experience; }
-
-    @Override
-    public String toString() {
-        return name + " (" + department + ", $" + salary + ")";
-    }
-}
 
 public class EmployeeStreams {
 
