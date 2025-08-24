@@ -2,14 +2,13 @@ package org.employee.rest.api.service;
 
 import jakarta.annotation.PostConstruct;
 import org.employee.rest.api.dto.EmployeeCreateRequest;
-import org.employee.rest.api.dto.EmployeeResponse;
-import org.employee.rest.api.exception.EmployeeNotFoundException;
 import org.employee.rest.api.model.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -32,31 +31,26 @@ public class EmployeeService implements IEmployeeService{
     }
 
     @Override
-    public List<EmployeeResponse> findAll() {
+    public List<Employee> findAll() {
         return employees.values()
                 .stream()
-                .map(this::modelToDtoResponse)
                 .toList();
     }
 
     @Override
-    public EmployeeResponse findById(String id) {
-        if(employees.containsKey(id)){
-            return modelToDtoResponse(employees.get(id));
-        }else{
-            throw new EmployeeNotFoundException("Employee with id " + id + " not found");
-        }
+    public Optional<Employee> findById(String id) {
+        return Optional.ofNullable(employees.get(id));
     }
 
     @Override
-    public EmployeeResponse save(EmployeeCreateRequest request) {
+    public Employee save(EmployeeCreateRequest request) {
 
         String id = "EMP" + String.format("%03d", counter.getAndIncrement());
         Employee employee = dtoCreateRequestToEmployee(request);
         employee.setId(id);
         this.employees.put(id, employee);
 
-        return modelToDtoResponse(employee);
+        return employee;
     }
 
     @Override
@@ -74,27 +68,10 @@ public class EmployeeService implements IEmployeeService{
     }
 
     @Override
-    public Map<String, List<EmployeeResponse>> getPerformanceSegmentation(double threshold) {
-        Map<Boolean, List<EmployeeResponse>> performanceSegmentation = employees.values()
+    public Map<Boolean, List<Employee>> getPerformanceSegmentation(double threshold) {
+        return employees.values()
                 .stream()
-                .map(this::modelToDtoResponse)
                 .collect(Collectors.partitioningBy(emp -> emp.getSalary() > threshold));
-
-        return Map.of(
-                "HighPerformances", performanceSegmentation.get(true),
-                "LowPerformances", performanceSegmentation.get(false)
-        );
-    }
-
-    private EmployeeResponse modelToDtoResponse(Employee model){
-        return EmployeeResponse.builder()
-                .id(model.getId())
-                .name(model.getName())
-                .department(model.getDepartment())
-                .salary(model.getSalary())
-                .experience(model.getExperience())
-                .level(model.getLevel())
-                .build();
     }
 
     private Employee dtoCreateRequestToEmployee(EmployeeCreateRequest request){

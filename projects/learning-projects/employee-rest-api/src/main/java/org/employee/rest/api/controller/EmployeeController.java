@@ -3,14 +3,15 @@ package org.employee.rest.api.controller;
 import jakarta.validation.Valid;
 import org.employee.rest.api.dto.EmployeeCreateRequest;
 import org.employee.rest.api.dto.EmployeeResponse;
+import org.employee.rest.api.model.Employee;
 import org.employee.rest.api.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,18 +24,21 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<EmployeeResponse>> getEmployees(){
-        return ResponseEntity.ok(employeeService.findAll());
+        return ResponseEntity.ok(employeeService.findAll().stream().map(this::modelToDtoResponse).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable String id){
-        return ResponseEntity.ok(employeeService.findById(id));
+        return employeeService.findById(id)
+                .map(this::modelToDtoResponse)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public  ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeCreateRequest request){
 
-        EmployeeResponse employee = employeeService.save(request);
+        Employee employee = employeeService.save(request);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -42,7 +46,7 @@ public class EmployeeController {
                 .toUri();
 
         return  ResponseEntity.created(location)
-                .body(employee);
+                .body(this.modelToDtoResponse(employee));
     }
 
     @GetMapping("/analytics/department-counts")
@@ -55,10 +59,34 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getAverageSalaryByDepartment());
     }
 
-    @GetMapping("/analytics/perfomance-segmentation")
+    @GetMapping("/analytics/performance-segmentation")
     public  ResponseEntity<Map<String, List<EmployeeResponse>>> getPerformanceSegmentation(
             @RequestParam(defaultValue = "70000") double threshold){
-        return ResponseEntity.ok(employeeService.getPerformanceSegmentation(threshold));
+        Map<Boolean, List<Employee>> performanceSegmentation = employeeService.getPerformanceSegmentation(threshold);
+        Map<String, List<EmployeeResponse>> response = new HashMap<>();
+
+        response.put("highPerformance", performanceSegmentation.get(true)
+                .stream()
+                .map(this::modelToDtoResponse)
+                .toList());
+
+        response.put("lowPerformance", performanceSegmentation.get(false)
+                .stream()
+                .map(this::modelToDtoResponse)
+                .toList());
+
+        return ResponseEntity.ok(response);
+    }
+
+    private EmployeeResponse modelToDtoResponse(Employee model){
+        return EmployeeResponse.builder()
+                .id(model.getId())
+                .name(model.getName())
+                .department(model.getDepartment())
+                .salary(model.getSalary())
+                .experience(model.getExperience())
+                .level(model.getLevel())
+                .build();
     }
 
 }

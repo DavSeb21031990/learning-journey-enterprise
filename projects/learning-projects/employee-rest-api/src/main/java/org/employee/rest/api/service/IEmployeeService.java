@@ -1,23 +1,24 @@
 package org.employee.rest.api.service;
 
 import org.employee.rest.api.dto.EmployeeCreateRequest;
-import org.employee.rest.api.dto.EmployeeResponse;
+import org.employee.rest.api.model.Employee;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface IEmployeeService {
 
-    List<EmployeeResponse> findAll();
+    List<Employee> findAll();
 
-    EmployeeResponse findById(String id);
+    Optional<Employee> findById(String id);
 
-    EmployeeResponse save(EmployeeCreateRequest request);
+    Employee save(EmployeeCreateRequest request);
 
     Map<String, Long> getDepartmentCounts();
 
     Map<String, Double> getAverageSalaryByDepartment();
 
-    Map<String, List<EmployeeResponse>> getPerformanceSegmentation(double threshold);
+    Map<Boolean, List<Employee>> getPerformanceSegmentation(double threshold);
 
 }
