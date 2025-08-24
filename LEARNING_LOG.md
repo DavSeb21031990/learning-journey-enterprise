@@ -174,3 +174,62 @@ git commit -m "Day 1: Repository setup - Learning journey begins! 🚀"
 - **Topic:** Spring Boot REST Controllers + Validation
 - **Connection:** "REST endpoints will expose Employee dashboard analytics via HTTP API"
 - **Bridge:** "Advanced Collectors generate insights → REST APIs expose them to frontend"
+
+## Day 5 - [Fecha de hoy] - Spring Boot REST Controllers + Validation
+⏱️ **Time:** 45 min | 🎯 **Focus:** Employee dashboard → Professional REST API transformation
+
+### 🧠 Key Concepts Learned
+1. **@RestController** - Transform business logic into HTTP API endpoints with automatic JSON serialization
+2. **Request/Response DTOs** - Clean API contracts separating internal models from external interfaces
+3. **Bean Validation (@Valid)** - Automatic request validation with meaningful error messages
+4. **@RestControllerAdvice** - Centralized exception handling for consistent API error responses
+5. **ResponseEntity** - Full HTTP response control (status codes, headers, body)
+6. **ServletUriComponentsBuilder** - Professional Location header generation for created resources
+7. **@PostConstruct** - Automatic test data loading on application startup
+
+### 💡 "Aha!" Moments
+- Dashboard analytics methods translate directly to REST endpoints
+- @Valid + validation annotations provide robust API input protection
+- Location header follows REST best practices for resource creation
+- ServletUriComponentsBuilder automatically constructs correct URLs
+- @PostConstruct enables immediate API functionality with test data
+- Employee HashMap from Day 2 perfect for REST API storage layer
+- Advanced Collectors from Day 4 power the analytics endpoints seamlessly
+
+### 🔗 Connections Made
+- Links to: [[Day 2 - HashMap Internals]], [[Day 4 - Collectors Advanced]], [[REST API Design]]
+- Builds on: HashMap O(1) storage + Stream analytics + HTTP endpoint exposure
+- Enables: Frontend integration, mobile app backends, microservices architecture
+- Professional API: Validation, error handling, proper HTTP status codes
+
+### 🛠️ Practical Implementation - Employee REST API
+- ✅ Complete CRUD operations: GET, POST with proper HTTP methods
+- ✅ Dashboard Analytics Endpoints: department-counts, average-salary, performance-segmentation
+- ✅ Professional Validation: @NotBlank, @DecimalMin, @Pattern with custom messages
+- ✅ Error Handling: 400 validation errors, 404 not found, 201 created responses
+- ✅ Location Headers: RESTful resource creation with proper URI construction
+- ✅ Test Data Loading: @PostConstruct with 8 employees from Day 4 dashboard
+- ✅ DTO Separation: Clean API contracts with EmployeeCreateRequest/EmployeeResponse
+
+### 🌐 API Endpoints Implemented
+- GET    /api/v1/employees                           # All employees
+- GET    /api/v1/employees/{id}                      # Single employee
+- POST   /api/v1/employees                           # Create employee
+- GET    /api/v1/employees/analytics/department-counts
+- GET    /api/v1/employees/analytics/average-salary-by-department
+- GET    /api/v1/employees/analytics/performance-segmentation?threshold=70000
+
+### ❓ Questions to Explore Tomorrow
+- ¿Cómo integrar PostgreSQL database para real data persistence?
+- ¿Cómo implementar PUT/DELETE operations for complete CRUD?
+- ¿Cómo agregar Spring Security para API authentication?
+
+### 📊 Self-Assessment
+- **Understanding:** 5/5 (REST principles crystal clear, Spring Boot architecture mastered)
+- **Practical Application:** 5/5 (fully functional API with all endpoints working)
+- **Retention Confidence:** 5/5 (strong connection to previous learnings, production-ready code)
+
+### 🎯 Tomorrow's Preview
+- **Topic:** PostgreSQL Integration + Spring Data JPA
+- **Connection:** "Database persistence will replace HashMap storage with real data layer"
+- **Bridge:** "REST API structure stays same, storage layer evolves from HashMap to PostgreSQL"
