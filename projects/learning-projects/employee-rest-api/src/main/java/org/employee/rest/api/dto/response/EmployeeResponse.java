@@ -1,4 +1,4 @@
-package org.employee.rest.api.dto;
+package org.employee.rest.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

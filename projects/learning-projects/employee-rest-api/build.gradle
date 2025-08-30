@@ -27,12 +27,18 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // DATA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // DATABASE - POSTGRESQL
     runtimeOnly 'org.postgresql:postgresql'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // SECURITY
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // DEVTOOLS
+    developmentOnly 'org.springframework.boot:spring-boot-devtool'
 
     // LOMBOK
     compileOnly 'org.projectlombok:lombok'

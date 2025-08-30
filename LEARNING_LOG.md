@@ -266,3 +266,58 @@ git commit -m "Day 1: Repository setup - Learning journey begins! 🚀"
 - **Integration:** 5/5 (seamless HashMap → PostgreSQL transition)
 
 **Result: Enterprise-grade Employee Management API with PostgreSQL persistence** ✅
+
+## Day 7 - Advanced JPA + Spring Security
+⏱️ **Time:** 45 min | 🎯 **Focus:** Entity relationships + API authentication
+
+### 🧠 Key Concepts Learned
+1. **JPA Entity Relationships** - @OneToMany/@ManyToOne bidirectional mapping with proper cascade and fetch strategies
+2. **Foreign Key Management** - @JoinColumn for establishing database-level relationships between entities
+3. **Spring Security Configuration** - SecurityFilterChain with role-based endpoint protection
+4. **HTTP Basic Authentication** - STATELESS session management for REST API security
+5. **Dependency Injection Architecture** - @DependsOn for controlling service initialization order
+
+### 💡 "Aha!" Moments
+- Department entity must exist BEFORE Employee creation - @DependsOn solves initialization order
+- LAZY fetch is default and correct - only load related data when explicitly needed
+- STATELESS sessions essential for REST APIs - each request authenticates independently
+- Role-based security maps naturally to business requirements (HR creates, USER views)
+- Custom queries with JPQL more efficient than loading all entities and filtering in memory
+
+### 🔗 Connections Made
+- Links to: [[Day 6 - PostgreSQL + JPA]], [[REST API Design]], [[Enterprise Security Patterns]]
+- Builds on: Basic JPA entities + Spring Boot foundation evolving to enterprise-grade architecture
+- Database relationships mirror real business domain models
+- Security concerns separation from business logic through Spring configuration
+
+### 🛠️ Practical Implementation
+- ✅ Created Department entity with @OneToMany relationship to Employee
+- ✅ Refactored Employee entity with @ManyToOne relationship and helper method getDepartmentName()
+- ✅ Implemented SecurityFilterChain with role-based endpoint protection (USER/ADMIN)
+- ✅ Configured HTTP Basic Authentication with BCrypt password encoding
+- ✅ Updated analytics methods to use relationship navigation instead of String fields
+- ✅ Established proper service separation with DepartmentService and EmployeeService
+
+### 🏗️ Architecture Evolution
+```
+Day 6: Employee(String department) → Single entity with String reference
+Day 7: Employee(@ManyToOne Department) + Department(@OneToMany List<Employee>) → Proper relational mapping
+
+Security: Open API → Role-protected endpoints with authentication required
+```
+
+### ❓ Questions to Explore Later
+- When to use JPQL vs native SQL for complex analytics queries?
+- How to implement JWT tokens for more scalable authentication?
+- Should department analytics live in EmployeeService or separate AnalyticsService?
+- Performance implications of LAZY fetch in production with large datasets?
+
+### 📊 Self-Assessment
+- **Understanding:** 5/5 (JPA relationships clear, Spring Security configuration mastered)
+- **Practical Application:** 4/5 (successfully implemented but could optimize queries further)
+- **Retention Confidence:** 5/5 (strong connection between concepts and real-world business requirements)
+
+### 🎯 Tomorrow's Preview
+- **Topic:** Advanced queries with custom repositories and projections
+- **Connection:** "Optimizing the relationship queries built today for production-level performance"
+- **Bridge:** "JPA relationships provide data integrity, tomorrow's custom queries provide performance optimization"

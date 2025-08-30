@@ -1,4 +1,4 @@
-package org.employee.rest.api.dto;
+package org.employee.rest.api.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -32,5 +32,8 @@ public class EmployeeCreateRequest {
     @NotBlank(message = "Level is required")
     @Pattern(regexp = "Junior|Mid|Senior", message = "Level must be Junior, Mid, or Senior")
     private String level;
+
+    @NotBlank(message = "Department ID is required")
+    private String departmentId;
 
 }

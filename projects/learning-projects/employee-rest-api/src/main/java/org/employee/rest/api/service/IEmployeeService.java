@@ -1,6 +1,6 @@
 package org.employee.rest.api.service;
 
-import org.employee.rest.api.dto.EmployeeCreateRequest;
+import org.employee.rest.api.dto.request.EmployeeCreateRequest;
 import org.employee.rest.api.model.Employee;
 
 import java.util.List;

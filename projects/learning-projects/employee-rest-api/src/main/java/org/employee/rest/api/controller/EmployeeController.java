@@ -1,8 +1,8 @@
 package org.employee.rest.api.controller;
 
 import jakarta.validation.Valid;
-import org.employee.rest.api.dto.EmployeeCreateRequest;
-import org.employee.rest.api.dto.EmployeeResponse;
+import org.employee.rest.api.dto.request.EmployeeCreateRequest;
+import org.employee.rest.api.dto.response.EmployeeResponse;
 import org.employee.rest.api.model.Employee;
 import org.employee.rest.api.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +82,6 @@ public class EmployeeController {
         return EmployeeResponse.builder()
                 .id(model.getId())
                 .name(model.getName())
-                .department(model.getDepartment())
                 .salary(model.getSalary())
                 .experience(model.getExperience())
                 .level(model.getLevel())
