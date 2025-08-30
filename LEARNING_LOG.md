@@ -233,3 +233,36 @@ git commit -m "Day 1: Repository setup - Learning journey begins! 🚀"
 - **Topic:** PostgreSQL Integration + Spring Data JPA
 - **Connection:** "Database persistence will replace HashMap storage with real data layer"
 - **Bridge:** "REST API structure stays same, storage layer evolves from HashMap to PostgreSQL"
+
+## Day 6 - [Fecha] - PostgreSQL + Spring Data JPA Integration
+⏱️ **Time:** 45 min | 🎯 **Focus:** HashMap → PostgreSQL database transformation
+
+### 🧠 Key Concepts Mastered
+1. **JPA Entity Mapping** - @Entity, @Table, @Column annotations for database schema
+2. **Spring Data JPA Repository** - Auto-generated CRUD + custom query methods
+3. **Database Configuration** - PostgreSQL connection, Hibernate properties
+4. **@Transactional Management** - ACID properties, rollback, data integrity
+5. **Data Persistence Lifecycle** - Entity states, automatic SQL generation
+6. **Database Initialization** - @PostConstruct data loading for development
+
+### 💻 TRANSFORMATION ACHIEVED
+- ✅ Employee class → @Entity with proper database mapping
+- ✅ HashMap operations → JpaRepository automatic SQL queries
+- ✅ In-memory storage → PostgreSQL persistent database
+- ✅ Manual data management → @Transactional protection
+- ✅ Application-scoped data → Multi-user concurrent access
+- ✅ Same REST endpoints → Now enterprise-grade persistence
+
+### 🎯 PRODUCTION-READY FEATURES
+- Data survives application restarts
+- Concurrent user access with transaction isolation
+- Automatic SQL query generation from method names
+- Database-level data integrity constraints
+- Enterprise-grade persistence layer
+
+### 📊 Self-Assessment
+- **Understanding:** 5/5 (JPA concepts crystal clear)
+- **Implementation:** 5/5 (all endpoints working with database)
+- **Integration:** 5/5 (seamless HashMap → PostgreSQL transition)
+
+**Result: Enterprise-grade Employee Management API with PostgreSQL persistence** ✅

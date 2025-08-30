@@ -1,11 +1,13 @@
 package org.employee.rest.api.service;
 
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.employee.rest.api.dto.EmployeeCreateRequest;
 import org.employee.rest.api.model.Employee;
+import org.employee.rest.api.repository.IEmployeeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,68 +15,86 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeService implements IEmployeeService{
+@RequiredArgsConstructor
+public class EmployeeService implements IEmployeeService {
 
-    private final AtomicInteger counter = new AtomicInteger(8);
-    private final Map<String, Employee> employees = new HashMap<>();
+    private final IEmployeeRepository repository;
+
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     @PostConstruct
     public void init() {
-        employees.put("EMP001", new Employee("EMP001", "Juan Perez", "Engineering", 75000, 5, "Mid"));
-        employees.put("EMP002", new Employee("EMP002", "Maria Lopez", "Marketing", 65000, 3, "Junior"));
-        employees.put("EMP003", new Employee("EMP003", "Pedro Garcia", "Engineering", 95000, 8, "Senior"));
-        employees.put("EMP004", new Employee("EMP004", "Ana Rodriguez", "Sales", 55000, 2, "Junior"));
-        employees.put("EMP005", new Employee("EMP005", "Carlos Mendez", "Engineering", 105000, 12, "Senior"));
-        employees.put("EMP006", new Employee("EMP006", "Sofia Chen", "Marketing", 75000, 6, "Mid"));
-        employees.put("EMP007", new Employee("EMP007", "Luis Ramirez", "Sales", 48000, 1, "Junior"));
-        employees.put("EMP008", new Employee("EMP008", "Isabella Torres", "Engineering", 82000, 4, "Mid"));
+        if (repository.count() > 0) {
+            System.out.println("📊 Database already contains " + repository.count() + " employees");
+            return;
+        }
+        List<Employee> employeeLst = List.of(
+                new Employee("EMP001", "Juan Perez", "Engineering", 75000.0, 5, "Mid"),
+                new Employee("EMP002", "Maria Lopez", "Marketing", 65000.0, 3, "Junior"),
+                new Employee("EMP003", "Pedro Garcia", "Engineering", 95000.0, 8, "Senior"),
+                new Employee("EMP004", "Ana Rodriguez", "Sales", 55000.0, 2, "Junior"),
+                new Employee("EMP005", "Carlos Mendez", "Engineering", 105000.0, 12, "Senior"),
+                new Employee("EMP006", "Sofia Chen", "Marketing", 75000.0, 6, "Mid"),
+                new Employee("EMP007", "Luis Ramirez", "Sales", 48000.0, 1, "Junior"),
+                new Employee("EMP008", "Isabella Torres", "Engineering", 82000.0, 4, "Mid")
+        );
+
+        repository.saveAll(employeeLst);
+        System.out.println("✅ Loaded " + employeeLst.size() + " employees to database");
+
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Employee> findAll() {
-        return employees.values()
-                .stream()
-                .toList();
+        return repository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Employee> findById(String id) {
-        return Optional.ofNullable(employees.get(id));
+        return this.repository.findById(id);
     }
 
+    @Transactional
     @Override
     public Employee save(EmployeeCreateRequest request) {
 
-        String id = "EMP" + String.format("%03d", counter.getAndIncrement());
         Employee employee = dtoCreateRequestToEmployee(request);
-        employee.setId(id);
-        this.employees.put(id, employee);
+        employee.setId(generatorId());
 
-        return employee;
+        return this.repository.save(employee);
     }
 
+    private String generatorId() {
+        return String.format("%03d", counter.getAndIncrement());
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public Map<String, Long> getDepartmentCounts() {
-        return employees.values()
+        return this.repository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Map<String, Double> getAverageSalaryByDepartment() {
-        return employees.values()
+        return this.repository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Map<Boolean, List<Employee>> getPerformanceSegmentation(double threshold) {
-        return employees.values()
+        return this.repository.findAll()
                 .stream()
                 .collect(Collectors.partitioningBy(emp -> emp.getSalary() > threshold));
     }
 
-    private Employee dtoCreateRequestToEmployee(EmployeeCreateRequest request){
+    private Employee dtoCreateRequestToEmployee(EmployeeCreateRequest request) {
         return Employee.builder()
                 .name(request.getName())
                 .department(request.getDepartment())
